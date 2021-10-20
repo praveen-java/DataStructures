@@ -1,4 +1,4 @@
-package com.btreedemo;
+package com.btree;
 
 public class BinaryTreeNode {
 	public int data;
