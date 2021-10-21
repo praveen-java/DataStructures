@@ -2,7 +2,9 @@ package com.btree;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+import java.util.Stack;
 
 public class CreateTree {
 	private BinaryTreeNode root;
@@ -18,6 +20,9 @@ public class CreateTree {
 		inorderTraversal(root);System.out.println();
 		preorderTraversal(root);System.out.println();
 		postorderTraversal(root);System.out.println();
+		System.out.println(preorder(root));
+		System.out.println(inOrder(root));
+		System.out.println(postOrder(root));
 //		String str = traversePreOrder(root);
 //		System.out.println(str);
 	}
@@ -154,5 +159,77 @@ public class CreateTree {
 			}
 		}
 		return root;
+	}
+	
+	public List<Integer> preorder(BinaryTreeNode root) {
+		List<Integer> res = new ArrayList<>();
+		if(root == null)
+		return res ;
+		Stack<BinaryTreeNode> s = new Stack<BinaryTreeNode>();
+		s.push(root);
+		while(!s.isEmpty()) {
+			BinaryTreeNode tmp = s.pop();
+			res.add(tmp.getData());
+			if(tmp.getRight() != null) {
+				s.push(tmp.getRight());
+			}
+			if(tmp.getLeft() != null) {
+				s.push(tmp.getLeft());
+			}
+		}
+		return res;
+	}
+	
+	public List<Integer> inOrder(BinaryTreeNode root){
+		List<Integer> res = new ArrayList<>();
+		if(root == null)
+			return res;
+		Stack<BinaryTreeNode> s = new Stack<BinaryTreeNode>();
+		BinaryTreeNode currentNode = root;
+		boolean done = false;
+		while(!done) {
+			if(currentNode != null) {
+				s.push(currentNode);
+				currentNode = currentNode.getLeft();
+			}else {
+				if(s.isEmpty())
+					done = true;
+				else {
+					currentNode =s.pop();
+					res.add(currentNode.getData());
+					currentNode = currentNode.getRight();
+				}
+			}
+		}
+		return res;
+	}
+	
+
+	private List<Integer> postOrder(BinaryTreeNode root) {
+		List<Integer> res = new ArrayList<>();
+			if(root == null) return res;
+		Stack<BinaryTreeNode> s = new Stack<BinaryTreeNode>();
+		s.push(root);
+		BinaryTreeNode prev = null;
+		while(!s.isEmpty()) {
+			BinaryTreeNode curr = s.peek();
+			if(prev == null||prev.getLeft()==curr||prev.getRight()==curr){
+				if(curr.getLeft()!=null) {
+					s.push(curr.getLeft());
+				}
+				else if(curr.getRight()!=null) {
+					s.push(curr.getRight());
+				}
+			}else if(curr.getLeft() == prev) {
+				if(curr.getRight() != null) {
+					s.push(curr.getRight());
+				}
+			}else {
+				res.add(curr.getData());
+				s.pop();
+			}
+			prev = curr;
+		}
+		return res;
 	}
 }
